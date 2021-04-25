@@ -4,10 +4,19 @@ const passport = require('passport');
 const router = express.Router();
 
 const authenticate = require('../authenticate');
+const verifyAdmin = require('../authenticate');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-    res.send('respond with a resource');
+router.get('/', (req, res, next) => {
+    verifyAdmin.verifyAdmin(req, res, next)
+}, (req, res, next) => {
+    User.find()
+    .then(users => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(users);
+    })
+    .catch(err => next(err))
 });
 
 router.post('/signup', (req, res) => {
