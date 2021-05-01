@@ -45,6 +45,7 @@ campsiteRouter.route('/')
 campsiteRouter.route('/:campsiteId')
 .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
 .get(cors.cors, (req, res, next) => {
+    console.log(req.params.campsiteId)
     Campsite.findById(req.params.campsiteId)
     .populate('comments.author')
     .then(campsite => {
